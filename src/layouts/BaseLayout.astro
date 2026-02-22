@@ -1,0 +1,34 @@
+---
+import { ViewTransitions } from 'astro:transitions';
+import BaseHead from '../components/BaseHead.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import type { Lang } from '../data/site';
+import '@fontsource-variable/inter';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  lang: Lang;
+  currentPath: string;
+}
+
+const { title, description, lang, currentPath } = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <BaseHead title={title} description={description} lang={lang} currentPath={currentPath} />
+    <ViewTransitions />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">{lang === 'en' ? 'Skip to content' : 'Vai al contenuto'}</a>
+    <SiteHeader lang={lang} currentPath={currentPath} />
+    <main id="main-content" class="container">
+      <slot />
+    </main>
+    <SiteFooter lang={lang} />
+  </body>
+</html>

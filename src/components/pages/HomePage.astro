@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../PostList.astro';
+import { siteConfig } from '../../data/site';
+import { t, langPath } from '../../utils/i18n';
+import { getLatestPosts } from '../../utils/posts';
+import type { Lang } from '../../data/site';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const currentPath = langPath(lang, '/');
+const latestPosts = await getLatestPosts(lang, 5);
+---
+
+<BaseLayout
+  title={`${siteConfig.name} — ${siteConfig.role[lang]}`}
+  description={siteConfig.description[lang]}
+  lang={lang}
+  currentPath={currentPath}
+>
+  <section class="hero section">
+    <h1>{siteConfig.name}</h1>
+    <p class="tagline">{siteConfig.tagline[lang]}</p>
+    <p class="role">{siteConfig.role[lang]}</p>
+    <div class="quick-links">
+      <a href={langPath(lang, '/cv')} class="btn">{t(lang, 'nav.cv')}</a>
+      <a href={langPath(lang, '/publications')} class="btn">{t(lang, 'nav.publications')}</a>
+      <a href={langPath(lang, '/blog')} class="btn">{t(lang, 'nav.blog')}</a>
+    </div>
+  </section>
+
+  {latestPosts.length > 0 && (
+    <section class="section">
+      <h2 class="section-title">{t(lang, 'home.latest')}</h2>
+      <PostList posts={latestPosts} lang={lang} />
+      <p style="margin-top: var(--space-md);">
+        <a href={langPath(lang, '/blog')} class="link-arrow">{t(lang, 'home.viewAll')}</a>
+      </p>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .hero {
+    padding: 5rem 0 3rem;
+    border-left: 4px solid var(--accent);
+    padding-left: var(--space-xl);
+  }
+  .hero h1 {
+    font-size: 2.8rem;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--space-sm);
+  }
+  .tagline {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: var(--space-xs);
+  }
+  .role {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin-bottom: var(--space-xl);
+  }
+  .quick-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+  @media (max-width: 640px) {
+    .hero {
+      padding: 3rem 0 2rem;
+      padding-left: var(--space-md);
+    }
+    .hero h1 {
+      font-size: 2rem;
+    }
+  }
+</style>

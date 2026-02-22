@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { siteConfig } from '../../data/site';
+import { t, langPath } from '../../utils/i18n';
+import { readingTime } from '../../utils/posts';
+import { render } from 'astro:content';
+import type { Lang } from '../../data/site';
+
+interface Props { lang: Lang; post: any }
+const { lang, post } = Astro.props;
+const { Content } = await render(post);
+const time = readingTime(post.body ?? '', lang);
+const slug = post.id.replace(new RegExp(`^${lang}/`), '');
+const currentPath = langPath(lang, `/blog/${slug}`);
+
+const localeMap = { en: 'en-US', it: 'it-IT' } as const;
+function formatDate(date: Date): string {
+  return date.toLocaleDateString(localeMap[lang], {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+const canonicalUrl = new URL(currentPath, Astro.site).href;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.pubDate.toISOString(),
+  author: { '@type': 'Person', name: siteConfig.name },
+  url: canonicalUrl,
+  inLanguage: lang,
+  keywords: post.data.tags.join(', '),
+};
+---
+
+<BaseLayout
+  title={`${post.data.title} — ${siteConfig.name}`}
+  description={post.data.description}
+  lang={lang}
+  currentPath={currentPath}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <article>
+    <header>
+      <h1 class="page-title">{post.data.title}</h1>
+      <div class="post-meta">
+        <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+        <span class="meta-sep">&middot;</span>
+        <span>{time}</span>
+        {post.data.tags.length > 0 && (
+          <div class="post-tags" style="margin-top: var(--space-sm); display: flex; flex-wrap: wrap; gap: var(--space-xs);">
+            {post.data.tags.map((tag: string) => (
+              <a href={langPath(lang, `/blog/tag/${tag}`)} class="tag">{tag}</a>
+            ))}
+          </div>
+        )}
+      </div>
+    </header>
+    <div class="post-content">
+      <Content />
+    </div>
+    <footer>
+      <a href={langPath(lang, '/blog')}>&larr; {t(lang, 'blog.back')}</a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .meta-sep {
+    margin: 0 0.4em;
+    color: var(--text-muted);
+  }
+</style>

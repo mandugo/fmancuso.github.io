@@ -1,0 +1,48 @@
+---
+import type { Lang } from '../data/site';
+import { alternateUrl } from '../utils/i18n';
+
+interface Props {
+  lang: Lang;
+  currentPath: string;
+}
+
+const { lang, currentPath } = Astro.props;
+const alt = alternateUrl(currentPath);
+---
+
+<nav class="lang-switcher" aria-label="Language">
+  <a href={alt.en} class:list={[{ active: lang === 'en' }]} aria-current={lang === 'en' ? 'page' : undefined}>EN</a>
+  <span class="sep">/</span>
+  <a href={alt.it} class:list={[{ active: lang === 'it' }]} aria-current={lang === 'it' ? 'page' : undefined}>IT</a>
+</nav>
+
+<style>
+  .lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.85rem;
+  }
+
+  .lang-switcher a {
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 0.15em 0.3em;
+    border-radius: 3px;
+    transition: color var(--transition), background-color var(--transition);
+  }
+
+  .lang-switcher a:hover {
+    color: var(--accent);
+  }
+
+  .lang-switcher a.active {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .sep {
+    color: var(--border);
+  }
+</style>

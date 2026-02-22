@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../PostList.astro';
+import { siteConfig } from '../../data/site';
+import { t, langPath } from '../../utils/i18n';
+import { getAllPosts } from '../../utils/posts';
+import type { Lang } from '../../data/site';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const currentPath = langPath(lang, '/blog');
+const posts = await getAllPosts(lang);
+
+const descriptionMap = {
+  en: `Blog posts by ${siteConfig.name}`,
+  it: `Articoli del blog di ${siteConfig.name}`,
+};
+---
+
+<BaseLayout
+  title={`${t(lang, 'blog.title')} — ${siteConfig.name}`}
+  description={descriptionMap[lang]}
+  lang={lang}
+  currentPath={currentPath}
+>
+  <h1 class="page-title">{t(lang, 'blog.title')}</h1>
+  <PostList posts={posts} lang={lang} />
+</BaseLayout>

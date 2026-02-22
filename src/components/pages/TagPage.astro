@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../PostList.astro';
+import { siteConfig } from '../../data/site';
+import { t, langPath } from '../../utils/i18n';
+import type { Lang } from '../../data/site';
+
+interface Props { lang: Lang; tag: string; posts: any[] }
+const { lang, tag, posts } = Astro.props;
+const currentPath = langPath(lang, `/blog/tag/${tag}`);
+---
+
+<BaseLayout
+  title={`${t(lang, 'blog.tagTitle')} "${tag}" — ${siteConfig.name}`}
+  description={`${t(lang, 'blog.tagTitle')} "${tag}"`}
+  lang={lang}
+  currentPath={currentPath}
+>
+  <h1 class="page-title">{t(lang, 'blog.tagTitle')} <span class="tag-highlight">"{tag}"</span></h1>
+  <PostList posts={posts} lang={lang} />
+  <p style="margin-top: var(--space-xl);">
+    <a href={langPath(lang, '/blog')}>&larr; {t(lang, 'blog.back')}</a>
+  </p>
+</BaseLayout>
+
+<style>
+  .tag-highlight {
+    color: var(--accent);
+  }
+</style>

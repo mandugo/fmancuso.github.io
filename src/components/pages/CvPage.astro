@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { siteConfig } from '../../data/site';
+import { cv } from '../../data/cv';
+import { t, langPath } from '../../utils/i18n';
+import type { Lang } from '../../data/site';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const data = cv[lang];
+const currentPath = langPath(lang, '/cv');
+---
+
+<BaseLayout
+  title={`${t(lang, 'cv.title')} — ${siteConfig.name}`}
+  description={data.profile}
+  lang={lang}
+  currentPath={currentPath}
+>
+  <div class="cv-actions no-print">
+    <button id="print-cv" class="btn" type="button">
+      {lang === 'en' ? 'Print / Save PDF' : 'Stampa / Salva PDF'}
+    </button>
+  </div>
+
+  <div class="cv-print-header">
+    <h1 class="cv-print-name">{siteConfig.name}</h1>
+    <p class="cv-print-role">{siteConfig.role[lang]}</p>
+    <p class="cv-print-contact">
+      {siteConfig.social.email}
+      {siteConfig.social.scholar && <span class="cv-print-sep"> | </span>}
+      {siteConfig.social.scholar && <Fragment>Scholar: {siteConfig.social.scholar}</Fragment>}
+      {siteConfig.social.github && <span class="cv-print-sep"> | </span>}
+      {siteConfig.social.github && <Fragment>GitHub: {siteConfig.social.github}</Fragment>}
+    </p>
+  </div>
+
+  <h1 class="page-title cv-screen-title">{t(lang, 'cv.title')}</h1>
+
+  <section class="cv-section">
+    <h2 class="section-title">{t(lang, 'cv.profile')}</h2>
+    <p>{data.profile}</p>
+  </section>
+
+  <section class="cv-section">
+    <h2 class="section-title">{t(lang, 'cv.experience')}</h2>
+    {data.experience.map((item) => (
+      <div class="cv-item">
+        <div class="cv-item-title">{item.title}</div>
+        <div class="cv-item-subtitle">{item.organization} &middot; {item.location}</div>
+        <div class="cv-item-date">{item.date}</div>
+        <p>{item.description}</p>
+      </div>
+    ))}
+  </section>
+
+  <section class="cv-section">
+    <h2 class="section-title">{t(lang, 'cv.education')}</h2>
+    {data.education.map((item) => (
+      <div class="cv-item">
+        <div class="cv-item-title">{item.degree}</div>
+        <div class="cv-item-subtitle">{item.institution} &middot; {item.location}</div>
+        <div class="cv-item-date">{item.date}</div>
+        {item.description && <p>{item.description}</p>}
+      </div>
+    ))}
+  </section>
+
+  <section class="cv-section">
+    <h2 class="section-title">{t(lang, 'cv.skills')}</h2>
+    <div class="skills-grid">
+      {data.skills.map((group) => (
+        <div class="skill-group">
+          <h4>{group.category}</h4>
+          <ul>
+            {group.items.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="cv-section">
+    <h2 class="section-title">{t(lang, 'cv.contact')}</h2>
+    <ul class="contact-list">
+      {data.contact.map((c) => (
+        <li>
+          <strong>{c.label}:</strong>{' '}
+          {c.href ? <a href={c.href}>{c.value}</a> : c.value}
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .cv-actions {
+    float: right;
+    margin-bottom: var(--space-md);
+  }
+  .cv-print-header {
+    display: none;
+  }
+  .contact-list {
+    list-style: none;
+    padding: 0;
+  }
+  .contact-list li {
+    margin-bottom: var(--space-sm);
+  }
+</style>
+
+<script>
+  function initPrintBtn() {
+    document.getElementById('print-cv')?.addEventListener('click', () => window.print());
+  }
+  initPrintBtn();
+  document.addEventListener('astro:after-swap', initPrintBtn);
+</script>

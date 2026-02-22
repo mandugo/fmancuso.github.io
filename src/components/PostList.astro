@@ -1,0 +1,112 @@
+---
+import type { Lang } from '../data/site';
+import { langPath, t } from '../utils/i18n';
+
+interface Post {
+  id: string;
+  data: {
+    title: string;
+    description: string;
+    pubDate: Date;
+    tags: string[];
+    lang: 'en' | 'it';
+  };
+}
+
+interface Props {
+  posts: Post[];
+  lang: Lang;
+}
+
+const { posts, lang } = Astro.props;
+
+function postHref(post: Post): string {
+  const slug = post.id.replace(/^(en|it)\//, '');
+  return langPath(lang, `/blog/${slug}`);
+}
+
+function formatDate(date: Date, lang: Lang): string {
+  return date.toLocaleDateString(lang === 'en' ? 'en-US' : 'it-IT', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+---
+
+{posts.length === 0 && <p>{t(lang, 'blog.noPosts')}</p>}
+
+<ul class="post-list">
+  {posts.map((post) => (
+    <li class="post-item">
+      <a href={postHref(post)} class="post-link">
+        <h3 class="post-item-title">{post.data.title}</h3>
+      </a>
+      <time class="post-date" datetime={post.data.pubDate.toISOString()}>
+        {formatDate(post.data.pubDate, lang)}
+      </time>
+      <p class="post-desc">{post.data.description}</p>
+      <div class="post-tags">
+        {post.data.tags.map((tag) => (
+          <a href={langPath(lang, `/blog/tag/${tag}`)} class="tag">{tag}</a>
+        ))}
+      </div>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .post-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .post-item {
+    padding: var(--space-lg);
+    border-radius: var(--radius);
+    border-left: 3px solid transparent;
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  }
+
+  .post-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+    border-left-color: var(--accent);
+  }
+
+  .post-link {
+    text-decoration: none;
+  }
+
+  .post-link:hover .post-item-title {
+    color: var(--accent);
+  }
+
+  .post-item-title {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    margin-bottom: var(--space-xs);
+    color: var(--text);
+    transition: color var(--transition);
+  }
+
+  .post-date {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: var(--space-sm);
+  }
+
+  .post-desc {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: var(--space-sm);
+  }
+
+  .post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+</style>

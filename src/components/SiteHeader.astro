@@ -1,0 +1,171 @@
+---
+import { siteConfig } from '../data/site';
+import { t, langPath } from '../utils/i18n';
+import ThemeToggle from './ThemeToggle.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import type { Lang } from '../data/site';
+
+interface Props {
+  lang: Lang;
+  currentPath: string;
+}
+
+const { lang, currentPath } = Astro.props;
+
+const navLinks = [
+  { href: langPath(lang, '/'), label: t(lang, 'nav.home') },
+  { href: langPath(lang, '/cv'), label: t(lang, 'nav.cv') },
+  { href: langPath(lang, '/publications'), label: t(lang, 'nav.publications') },
+  { href: langPath(lang, '/blog'), label: t(lang, 'nav.blog') },
+];
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href={langPath(lang, '/')} class="site-name">{siteConfig.name}</a>
+    <nav class="site-nav" aria-label="Main">
+      {navLinks.map((link) => (
+        <a href={link.href} class:list={[{ active: currentPath === link.href }]}>{link.label}</a>
+      ))}
+    </nav>
+    <div class="header-actions">
+      <LanguageSwitcher lang={lang} currentPath={currentPath} />
+      <ThemeToggle />
+    </div>
+    <button id="menu-toggle" class="menu-toggle" aria-label="Open menu" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--border);
+    padding: var(--space-md) 0;
+    position: sticky;
+    top: 0;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 100;
+    transition: background-color var(--transition), box-shadow var(--transition);
+  }
+
+  :global([data-theme="dark"]) .site-header {
+    background: rgba(15, 23, 42, 0.85);
+  }
+
+  .site-header.scrolled {
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  :global([data-theme="dark"]) .site-header.scrolled {
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+  }
+
+  .site-name {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--text);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .site-name:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .site-nav {
+    display: flex;
+    gap: var(--space-md);
+    margin-left: auto;
+  }
+
+  .site-nav a {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+
+  .site-nav a:hover,
+  .site-nav a.active {
+    color: var(--text);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+    padding: 0.25rem;
+  }
+
+  @media (max-width: 700px) {
+    .site-nav,
+    .header-actions {
+      display: none;
+    }
+
+    .menu-toggle {
+      display: block;
+      margin-left: auto;
+    }
+
+    .header-inner.open .site-nav,
+    .header-inner.open .header-actions {
+      display: flex;
+    }
+
+    .header-inner.open {
+      flex-wrap: wrap;
+    }
+
+    .header-inner.open .site-nav {
+      order: 3;
+      width: 100%;
+      flex-direction: column;
+      gap: var(--space-sm);
+      padding-top: var(--space-sm);
+    }
+
+    .header-inner.open .header-actions {
+      order: 4;
+      width: 100%;
+      padding-top: var(--space-sm);
+    }
+  }
+</style>
+
+<script>
+  function initHeader() {
+    const menuToggle = document.getElementById('menu-toggle')!;
+    const headerInner = menuToggle.closest('.header-inner')!;
+    menuToggle.addEventListener('click', () => {
+      const expanded = headerInner.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', String(expanded));
+    });
+
+    const header = document.querySelector('.site-header')!;
+    const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 10);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  initHeader();
+  document.addEventListener('astro:after-swap', initHeader);
+</script>

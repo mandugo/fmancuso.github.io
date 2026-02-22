@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { siteConfig } from '../../data/site';
+import { t, langPath } from '../../utils/i18n';
+import { getPublications } from '../../utils/bibtex';
+import type { Lang } from '../../data/site';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const currentPath = langPath(lang, '/publications');
+const publications = getPublications();
+const years = [...new Set(publications.map((p) => p.year))].sort((a, b) => b - a);
+const types = [...new Set(publications.map((p) => p.type))].sort();
+
+const descriptionMap = {
+  en: `Academic publications by ${siteConfig.name}`,
+  it: `Pubblicazioni accademiche di ${siteConfig.name}`,
+};
+
+const jsonLdItems = publications.map((pub) => ({
+  '@context': 'https://schema.org',
+  '@type': 'ScholarlyArticle',
+  name: pub.title,
+  headline: pub.title,
+  author: pub.authors.split(', ').map((a: string) => ({ '@type': 'Person', name: a })),
+  datePublished: String(pub.year),
+  isPartOf: pub.venue ? { '@type': 'Periodical', name: pub.venue } : undefined,
+  url: pub.url,
+}));
+const jsonLd = { '@context': 'https://schema.org', '@graph': jsonLdItems };
+---
+
+<BaseLayout
+  title={`${t(lang, 'pub.title')} — ${siteConfig.name}`}
+  description={descriptionMap[lang]}
+  lang={lang}
+  currentPath={currentPath}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <h1 class="page-title">{t(lang, 'pub.title')}</h1>
+
+  <div class="filter-bar">
+    <label for="type-filter">{t(lang, 'pub.filterType')}</label>
+    <select id="type-filter">
+      <option value="all">{t(lang, 'pub.all')}</option>
+      {types.map((tp) => (
+        <option value={tp}>{tp}</option>
+      ))}
+    </select>
+
+    <label for="year-filter">{t(lang, 'pub.filterYear')}</label>
+    <select id="year-filter">
+      <option value="all">{t(lang, 'pub.all')}</option>
+      {years.map((y) => (
+        <option value={y}>{y}</option>
+      ))}
+    </select>
+  </div>
+
+  <div id="pub-list">
+    {publications.map((pub) => (
+      <div class="pub-entry" data-year={pub.year} data-type={pub.type}>
+        <div class="pub-header">
+          <span class={`pub-badge pub-badge--${pub.type}`}>{pub.type}</span>
+        </div>
+        <div class="pub-title">{pub.title}</div>
+        <div class="pub-authors">{pub.authors}</div>
+        <div class="pub-venue">
+          {pub.venue}{pub.venue && ','} <span class="pub-year">{pub.year}</span>
+          {pub.url && (
+            <a href={pub.url} class="pub-link" target="_blank" rel="noopener noreferrer">[DOI]</a>
+          )}
+        </div>
+      </div>
+    ))}
+  </div>
+</BaseLayout>
+
+<script>
+  function initPubFilters() {
+    const yearFilter = document.getElementById('year-filter') as HTMLSelectElement | null;
+    const typeFilter = document.getElementById('type-filter') as HTMLSelectElement | null;
+    if (!yearFilter || !typeFilter) return;
+    const entries = document.querySelectorAll<HTMLElement>('.pub-entry');
+
+    function applyFilters() {
+      const year = yearFilter.value;
+      const type = typeFilter.value;
+      entries.forEach((el) => {
+        const matchYear = year === 'all' || el.dataset.year === year;
+        const matchType = type === 'all' || el.dataset.type === type;
+        el.style.display = matchYear && matchType ? '' : 'none';
+      });
+    }
+
+    yearFilter.addEventListener('change', applyFilters);
+    typeFilter.addEventListener('change', applyFilters);
+  }
+  initPubFilters();
+  document.addEventListener('astro:after-swap', initPubFilters);
+</script>

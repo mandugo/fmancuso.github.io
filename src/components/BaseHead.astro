@@ -1,0 +1,58 @@
+---
+import { siteConfig } from '../data/site';
+import { alternateUrl } from '../utils/i18n';
+import type { Lang } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  lang: Lang;
+  currentPath: string;
+}
+
+const { title, description, lang, currentPath } = Astro.props;
+const alt = alternateUrl(currentPath);
+const canonicalUrl = new URL(currentPath, Astro.site);
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+
+<title>{title}</title>
+<meta name="description" content={description} />
+
+<link rel="canonical" href={canonicalUrl.href} />
+<link rel="alternate" hreflang="en" href={new URL(alt.en, Astro.site).href} />
+<link rel="alternate" hreflang="it" href={new URL(alt.it, Astro.site).href} />
+<link rel="alternate" hreflang="x-default" href={new URL(alt.en, Astro.site).href} />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl.href} />
+<meta property="og:site_name" content={siteConfig.name} />
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+
+<link rel="alternate" type="application/rss+xml" title={`${siteConfig.name} RSS`} href={lang === 'en' ? '/rss.xml' : '/it/rss.xml'} />
+
+<link rel="sitemap" href="/sitemap-index.xml" />
+
+{/* Prevent FOUC — runs before paint; also restores theme after View Transitions swap */}
+<script is:inline>
+  (function() {
+    function applyTheme() {
+      var stored = localStorage.getItem('theme');
+      if (stored) {
+        document.documentElement.setAttribute('data-theme', stored);
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    }
+    applyTheme();
+    document.addEventListener('astro:after-swap', applyTheme);
+  })();
+</script>
