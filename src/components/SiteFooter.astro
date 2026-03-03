@@ -64,6 +64,13 @@ const socialLinks = Object.entries(siteConfig.social)
     color: var(--text-muted);
   }
 
+  .footer-links a:not(:last-child)::after {
+    content: ' · ';
+    margin-left: var(--space-sm);
+    color: var(--text-muted);
+    opacity: 0.8;
+  }
+
   .footer-links a:hover {
     color: var(--accent);
   }

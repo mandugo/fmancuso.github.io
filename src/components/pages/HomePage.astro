@@ -19,13 +19,38 @@ const latestPosts = await getLatestPosts(lang, 5);
   currentPath={currentPath}
 >
   <section class="hero section">
-    <h1>{siteConfig.name}</h1>
-    <p class="tagline">{siteConfig.tagline[lang]}</p>
-    <p class="role">{siteConfig.role[lang]}</p>
-    <div class="quick-links">
-      <a href={langPath(lang, '/cv')} class="btn">{t(lang, 'nav.cv')}</a>
-      <a href={langPath(lang, '/publications')} class="btn">{t(lang, 'nav.publications')}</a>
-      <a href={langPath(lang, '/blog')} class="btn">{t(lang, 'nav.blog')}</a>
+    <div class="hero-wave" aria-hidden="true">
+      <svg viewBox="0 0 600 100" preserveAspectRatio="xMinYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <path
+          class="hero-wave-path"
+          d="M0,50 C33,30 67,30 100,50 C133,70 167,70 200,50 C233,30 267,30 300,50 C333,70 367,70 400,50 C433,30 467,30 500,50 C533,70 567,70 600,50"
+        />
+        <path
+          class="hero-wave-path hero-wave-path--offset"
+          d="M0,50 C33,30 67,30 100,50 C133,70 167,70 200,50 C233,30 267,30 300,50 C333,70 367,70 400,50 C433,30 467,30 500,50 C533,70 567,70 600,50"
+        />
+      </svg>
+    </div>
+    <div class="hero-content">
+      <div class="hero-main">
+        <img
+          src="/images/me.png"
+          alt="Francesco Mancuso"
+          class="hero-avatar"
+          loading="lazy"
+          decoding="async"
+        />
+        <div class="hero-text">
+          <h1>{siteConfig.name}</h1>
+          <p class="tagline">{siteConfig.tagline[lang]}</p>
+          <p class="role">{siteConfig.role[lang]}</p>
+          <div class="quick-links">
+            <a href={langPath(lang, '/cv')} class="hero-link link-arrow">{t(lang, 'nav.cv')}</a>
+            <a href={langPath(lang, '/publications')} class="hero-link link-arrow">{t(lang, 'nav.publications')}</a>
+            <a href={langPath(lang, '/blog')} class="hero-link link-arrow">{t(lang, 'nav.blog')}</a>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -42,37 +67,102 @@ const latestPosts = await getLatestPosts(lang, 5);
 
 <style>
   .hero {
+    position: relative;
     padding: 5rem 0 3rem;
-    border-left: 4px solid var(--accent);
+    border-left: 2px solid var(--accent);
     padding-left: var(--space-xl);
+    margin-bottom: var(--space-2xl);
+    overflow: hidden;
   }
-  .hero h1 {
+
+  .hero-wave {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.28;
+    mask-image: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent);
+  }
+
+  .hero-wave svg {
+    display: block;
+    width: 110%;
+    height: 120px;
+    transform: translateY(10px);
+  }
+
+  .hero-wave :global(path) {
+    stroke: color-mix(in srgb, var(--accent) 75%, var(--bg) 25%);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+  }
+
+  .hero-wave :global(.hero-wave-path--offset) {
+    transform: translate(90px, 18px);
+    opacity: 0.55;
+    stroke-width: 1.5;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-main {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+  }
+
+  .hero-avatar {
+    width: 104px;
+    height: 104px;
+    border-radius: 999px;
+    object-fit: cover;
+    border: 2px solid var(--accent);
+  }
+
+  .hero-text h1 {
     font-size: 2.8rem;
     letter-spacing: -0.03em;
     margin-bottom: var(--space-sm);
   }
-  .tagline {
+  .hero-text .tagline {
     font-size: 1.15rem;
     font-weight: 500;
     color: var(--text-muted);
     margin-bottom: var(--space-xs);
   }
-  .role {
+  .hero-text .role {
     font-size: 1rem;
     color: var(--text-muted);
     margin-bottom: var(--space-xl);
   }
-  .quick-links {
+  .hero-text .quick-links {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-sm);
+    gap: var(--space-md);
+  }
+  .hero-link {
+    font-size: 0.95rem;
   }
   @media (max-width: 640px) {
     .hero {
       padding: 3rem 0 2rem;
       padding-left: var(--space-md);
     }
-    .hero h1 {
+    .hero-main {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-md);
+    }
+    .hero-text h1 {
       font-size: 2rem;
     }
   }

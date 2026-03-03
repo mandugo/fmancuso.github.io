@@ -4,17 +4,17 @@
 
 :root {
   --bg: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --text: #1a1a2e;
-  --text-muted: #6b7280;
-  --accent: #0d9488;
-  --accent-hover: #0f766e;
-  --border: #e5e7eb;
-  --code-bg: #f3f4f6;
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --bg-secondary: #f7f7f5;
+  --text: #111111;
+  --text-muted: #6b6b6b;
+  --accent: #0f766e;
+  --accent-hover: #0b5f59;
+  --border: #e1e1dd;
+  --code-bg: #f3f1eb;
+  --shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
 
-  --font-body: 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui,
+    -system-ui, sans-serif;
   --font-heading: 'Georgia', 'Times New Roman', serif;
   --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
 
@@ -27,20 +27,20 @@
   --space-2xl: 3rem;
   --space-3xl: 4rem;
 
-  --radius: 6px;
+  --radius: 3px;
   --transition: 0.2s ease;
 }
 
 [data-theme="dark"] {
-  --bg: #0f172a;
-  --bg-secondary: #1e293b;
-  --text: #e2e8f0;
-  --text-muted: #94a3b8;
-  --accent: #2dd4bf;
-  --accent-hover: #5eead4;
-  --border: #334155;
-  --code-bg: #1e293b;
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --bg: #0b1220;
+  --bg-secondary: #111827;
+  --text: #e5e7eb;
+  --text-muted: #9ca3af;
+  --accent: #14b8a6;
+  --accent-hover: #2dd4bf;
+  --border: #1f2937;
+  --code-bg: #020617;
+  --shadow: 0 1px 2px rgba(15, 23, 42, 0.7);
 }
 
 /* ========================================
@@ -98,7 +98,7 @@ html {
 
 body {
   font-family: var(--font-body);
-  font-size: 1.0625rem;
+  font-size: 1.05rem;
   line-height: 1.7;
   letter-spacing: 0.01em;
   color: var(--text);
@@ -130,9 +130,9 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: var(--space-md);
 }
 
-h1 { font-size: 2rem; }
-h2 { font-size: 1.5rem; }
-h3 { font-size: 1.25rem; }
+h1 { font-size: 2.4rem; }
+h2 { font-size: 1.7rem; }
+h3 { font-size: 1.35rem; }
 
 p {
   margin-bottom: var(--space-md);
@@ -140,13 +140,15 @@ p {
 
 a {
   color: var(--accent);
-  text-decoration: none;
-  transition: color var(--transition);
+  text-decoration: underline;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.17em;
+  transition: color var(--transition), text-decoration-color var(--transition);
 }
 
 a:hover {
   color: var(--accent-hover);
-  text-decoration: underline;
+  text-decoration-color: currentColor;
 }
 
 strong { font-weight: 600; }
@@ -180,6 +182,7 @@ pre {
   background: var(--code-bg);
   padding: var(--space-md);
   border-radius: var(--radius);
+  border-left: 1px solid var(--accent);
   overflow-x: auto;
   margin-bottom: var(--space-md);
 }
@@ -191,7 +194,8 @@ pre code {
 
 hr {
   border: none;
-  border-top: 1px solid var(--border);
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border), transparent);
   margin: var(--space-xl) 0;
 }
 
@@ -212,9 +216,13 @@ img {
 }
 
 .page-title {
-  margin-bottom: var(--space-xl);
-  padding-bottom: var(--space-md);
+  margin-top: var(--space-2xl);
+  margin-bottom: var(--space-2xl);
+  padding-top: var(--space-md);
+  padding-bottom: var(--space-lg);
+  padding-left: var(--space-md);
   border-bottom: 1px solid var(--border);
+  border-left: 2px solid var(--accent);
 }
 
 .section {
@@ -222,8 +230,15 @@ img {
 }
 
 .section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   margin-bottom: var(--space-lg);
-  font-size: 1.35rem;
+  padding-bottom: var(--space-sm);
+  padding-left: var(--space-md);
+  border-bottom: 1px solid var(--border);
+  border-left: 2px solid var(--accent);
 }
 
 /* ========================================
@@ -254,6 +269,16 @@ img {
   content: ' →';
 }
 
+.back-link {
+  display: inline-block;
+  padding-left: var(--space-md);
+  border-left: 2px solid var(--accent);
+  text-decoration: none;
+}
+.back-link:hover {
+  text-decoration: underline;
+}
+
 /* ========================================
    Tags
    ======================================== */
@@ -263,7 +288,7 @@ img {
   font-size: 0.8rem;
   padding: 0.1em 0.55em;
   border-radius: 3px;
-  background: var(--bg-secondary);
+  background: transparent;
   color: var(--text-muted);
   border: 1px solid var(--border);
   transition: background-color var(--transition), color var(--transition), border-color var(--transition);
@@ -274,8 +299,8 @@ a.tag {
 }
 
 a.tag:hover {
-  background: var(--accent);
-  color: #ffffff;
+  background: transparent;
+  color: var(--accent);
   border-color: var(--accent);
   text-decoration: none;
 }
@@ -286,11 +311,11 @@ a.tag:hover {
 
 .pub-entry {
   margin-bottom: var(--space-lg);
-  padding-bottom: var(--space-lg);
-  padding-left: var(--space-md);
+  padding: var(--space-md) 0 var(--space-lg);
   border-bottom: 1px solid var(--border);
-  border-left: 3px solid var(--border);
-  transition: border-left-color var(--transition);
+  border-left: 3px solid transparent;
+  padding-left: var(--space-md);
+  transition: background-color var(--transition), border-color var(--transition), transform var(--transition);
 }
 
 .pub-entry:last-child {
@@ -298,7 +323,29 @@ a.tag:hover {
 }
 
 .pub-entry:hover {
+  background-color: var(--bg-secondary);
+  border-color: var(--border);
   border-left-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.pub-year-group:not(:first-child) {
+  margin-top: var(--space-2xl);
+}
+
+.pub-year-heading {
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--border);
+}
+
+.pub-year-group:first-child .pub-year-heading {
+  margin-top: 0;
 }
 
 .pub-header {
@@ -314,39 +361,47 @@ a.tag:hover {
   padding: 0.15em 0.5em;
   border-radius: 3px;
   line-height: 1.4;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
 }
 
 .pub-badge--journal {
-  background: #ccfbf1;
-  color: #115e59;
+  background: #e0f2f1;
+  border-color: #80cbc4;
+  color: #00695c;
 }
 [data-theme="dark"] .pub-badge--journal {
-  background: #134e4a;
-  color: #5eead4;
+  background: #064e3b;
+  border-color: #34d399;
+  color: #a7f3d0;
 }
 
 .pub-badge--conference {
-  background: #dcfce7;
-  color: #166534;
+  background: #e8f5e9;
+  border-color: #a5d6a7;
+  color: #1b5e20;
 }
 [data-theme="dark"] .pub-badge--conference {
-  background: #14432a;
-  color: #86efac;
+  background: #064e3b;
+  border-color: #4ade80;
+  color: #bbf7d0;
 }
 
 .pub-badge--thesis {
-  background: #fef3c7;
-  color: #92400e;
+  background: #fff8e1;
+  border-color: #ffecb3;
+  color: #8d6e63;
 }
 [data-theme="dark"] .pub-badge--thesis {
-  background: #422006;
-  color: #fcd34d;
+  background: #451a03;
+  border-color: #fed7aa;
+  color: #fed7aa;
 }
 
 .pub-badge--other {
-  background: var(--bg-secondary);
+  background: transparent;
   color: var(--text-muted);
-  border: 1px solid var(--border);
 }
 
 .pub-title {
@@ -385,22 +440,27 @@ a.tag:hover {
   margin-bottom: var(--space-2xl);
 }
 
+.cv-section:first-of-type {
+  margin-top: var(--space-xl);
+}
+
 .cv-item {
   position: relative;
   margin-bottom: var(--space-lg);
-  padding-left: calc(var(--space-md) + 6px);
-  border-left: 2px solid var(--border);
+  padding-left: calc(var(--space-md) + 4px);
+  border-left: 1px solid var(--border);
 }
 
 .cv-item::before {
   content: '';
   position: absolute;
-  left: -5px;
-  top: 6px;
-  width: 8px;
-  height: 8px;
+  left: -3px;
+  top: 0.55rem;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: var(--accent);
+  opacity: 0.75;
 }
 
 .cv-item-title {
@@ -472,6 +532,8 @@ a.tag:hover {
   align-items: center;
   gap: var(--space-sm);
   margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border);
 }
 
 .filter-bar label {
@@ -546,7 +608,8 @@ a.tag:hover {
   .site-footer,
   .footer-divider,
   .filter-bar,
-  .cv-actions {
+  .cv-actions,
+  .cv-title-row {
     display: none !important;
   }
 
@@ -606,6 +669,8 @@ a.tag:hover {
 
   .page-title {
     font-size: 16pt;
+    border-left: none;
+    padding-left: 0;
     border-bottom: 2px solid #000;
     padding-bottom: 0.3em;
     margin-bottom: 1em;
@@ -615,6 +680,8 @@ a.tag:hover {
     font-size: 11.5pt;
     text-transform: uppercase;
     letter-spacing: 0.08em;
+    border-left: none;
+    padding-left: 0;
     border-bottom: 0.5pt solid #999;
     padding-bottom: 0.2em;
     margin-bottom: 0.6em;
@@ -713,6 +780,15 @@ a.tag:hover {
   .pub-entry {
     border-left: none;
     padding-left: 0;
+  }
+
+  pre {
+    border-left: none;
+  }
+
+  hr {
+    background: none;
+    border-top: 1px solid #999;
   }
 
   .pub-badge {

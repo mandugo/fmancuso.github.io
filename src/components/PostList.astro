@@ -39,12 +39,12 @@ function formatDate(date: Date, lang: Lang): string {
 <ul class="post-list">
   {posts.map((post) => (
     <li class="post-item">
-      <a href={postHref(post)} class="post-link">
-        <h3 class="post-item-title">{post.data.title}</h3>
-      </a>
       <time class="post-date" datetime={post.data.pubDate.toISOString()}>
         {formatDate(post.data.pubDate, lang)}
       </time>
+      <a href={postHref(post)} class="post-link">
+        <h3 class="post-item-title">{post.data.title}</h3>
+      </a>
       <p class="post-desc">{post.data.description}</p>
       <div class="post-tags">
         {post.data.tags.map((tag) => (
@@ -63,16 +63,18 @@ function formatDate(date: Date, lang: Lang): string {
   }
 
   .post-item {
-    padding: var(--space-lg);
-    border-radius: var(--radius);
+    padding: var(--space-md) 0;
+    border-bottom: 1px solid var(--border);
     border-left: 3px solid transparent;
-    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    padding-left: var(--space-md);
+    transition: background-color var(--transition), border-color var(--transition), transform var(--transition);
   }
 
   .post-item:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow);
+    background-color: var(--bg-secondary);
+    border-color: var(--border);
     border-left-color: var(--accent);
+    transform: translateY(-1px);
   }
 
   .post-link {
@@ -85,7 +87,7 @@ function formatDate(date: Date, lang: Lang): string {
 
   .post-item-title {
     font-family: var(--font-heading);
-    font-size: 1.15rem;
+    font-size: 1.3rem;
     margin-bottom: var(--space-xs);
     color: var(--text);
     transition: color var(--transition);

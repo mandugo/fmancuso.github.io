@@ -21,20 +21,18 @@
 <style>
   .theme-toggle {
     background: none;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 0.4rem;
+    border: none;
+    padding: 0.25rem;
     cursor: pointer;
     color: var(--text);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: color var(--transition), border-color var(--transition);
+    transition: color var(--transition);
   }
 
   .theme-toggle:hover {
     color: var(--accent);
-    border-color: var(--accent);
   }
 
   :global([data-theme="dark"]) .icon-sun { display: inline-block; }

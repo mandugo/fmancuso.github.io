@@ -19,12 +19,13 @@ const currentPath = langPath(lang, `/blog/tag/${tag}`);
   <h1 class="page-title">{t(lang, 'blog.tagTitle')} <span class="tag-highlight">"{tag}"</span></h1>
   <PostList posts={posts} lang={lang} />
   <p style="margin-top: var(--space-xl);">
-    <a href={langPath(lang, '/blog')}>&larr; {t(lang, 'blog.back')}</a>
+    <a href={langPath(lang, '/blog')} class="back-link">&larr; {t(lang, 'blog.back')}</a>
   </p>
 </BaseLayout>
 
 <style>
   .tag-highlight {
     color: var(--accent);
+    font-style: italic;
   }
 </style>

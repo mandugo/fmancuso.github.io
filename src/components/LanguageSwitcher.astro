@@ -28,8 +28,6 @@ const alt = alternateUrl(currentPath);
   .lang-switcher a {
     color: var(--text-muted);
     text-decoration: none;
-    padding: 0.15em 0.3em;
-    border-radius: 3px;
     transition: color var(--transition), background-color var(--transition);
   }
 
@@ -40,6 +38,7 @@ const alt = alternateUrl(currentPath);
   .lang-switcher a.active {
     color: var(--text);
     font-weight: 600;
+    text-decoration: underline;
   }
 
   .sep {

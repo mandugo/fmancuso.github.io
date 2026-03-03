@@ -17,12 +17,6 @@ const currentPath = langPath(lang, '/cv');
   lang={lang}
   currentPath={currentPath}
 >
-  <div class="cv-actions no-print">
-    <button id="print-cv" class="btn" type="button">
-      {lang === 'en' ? 'Print / Save PDF' : 'Stampa / Salva PDF'}
-    </button>
-  </div>
-
   <div class="cv-print-header">
     <h1 class="cv-print-name">{siteConfig.name}</h1>
     <p class="cv-print-role">{siteConfig.role[lang]}</p>
@@ -35,7 +29,14 @@ const currentPath = langPath(lang, '/cv');
     </p>
   </div>
 
-  <h1 class="page-title cv-screen-title">{t(lang, 'cv.title')}</h1>
+  <div class="cv-title-row">
+    <h1 class="page-title cv-screen-title">{t(lang, 'cv.title')}</h1>
+    <div class="cv-actions no-print">
+      <button id="print-cv" class="btn" type="button">
+        {lang === 'en' ? 'Print / Save PDF' : 'Stampa / Salva PDF'}
+      </button>
+    </div>
+  </div>
 
   <section class="cv-section">
     <h2 class="section-title">{t(lang, 'cv.profile')}</h2>
@@ -96,10 +97,29 @@ const currentPath = langPath(lang, '/cv');
 </BaseLayout>
 
 <style>
-  .cv-actions {
-    float: right;
-    margin-bottom: var(--space-md);
+  .cv-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    margin-top: var(--space-2xl);
+    margin-bottom: var(--space-2xl);
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid var(--border);
   }
+
+  .cv-title-row .page-title {
+    margin: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .cv-actions {
+    flex-shrink: 0;
+  }
+
   .cv-print-header {
     display: none;
   }

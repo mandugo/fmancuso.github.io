@@ -58,20 +58,28 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': jsonLdItems };
   </div>
 
   <div id="pub-list">
-    {publications.map((pub) => (
-      <div class="pub-entry" data-year={pub.year} data-type={pub.type}>
-        <div class="pub-header">
-          <span class={`pub-badge pub-badge--${pub.type}`}>{pub.type}</span>
-        </div>
-        <div class="pub-title">{pub.title}</div>
-        <div class="pub-authors">{pub.authors}</div>
-        <div class="pub-venue">
-          {pub.venue}{pub.venue && ','} <span class="pub-year">{pub.year}</span>
-          {pub.url && (
-            <a href={pub.url} class="pub-link" target="_blank" rel="noopener noreferrer">[DOI]</a>
-          )}
-        </div>
-      </div>
+    {years.map((year) => (
+      <section class="pub-year-group">
+        <h2 class="pub-year-heading">{year}</h2>
+        {publications
+          .filter((pub) => pub.year === year)
+          .map((pub) => (
+            <div class="pub-entry" data-year={pub.year} data-type={pub.type}>
+              <div class="pub-header">
+                <span class={`pub-badge pub-badge--${pub.type}`}>{pub.type}</span>
+              </div>
+              <div class="pub-title">{pub.title}</div>
+              <div class="pub-authors">{pub.authors}</div>
+              <div class="pub-venue">
+                {pub.venue}{pub.venue && ','}{' '}
+                <span class="pub-year">{pub.year}</span>
+                {pub.url && (
+                  <a href={pub.url} class="pub-link" target="_blank" rel="noopener noreferrer">[DOI]</a>
+                )}
+              </div>
+            </div>
+          ))}
+      </section>
     ))}
   </div>
 </BaseLayout>
