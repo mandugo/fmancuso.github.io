@@ -67,6 +67,19 @@ const currentPath = langPath(lang, '/cv');
     ))}
   </section>
 
+  {data.awards && data.awards.length > 0 && (
+    <section class="cv-section">
+      <h2 class="section-title">{t(lang, 'cv.awards')}</h2>
+      {data.awards.map((award) => (
+        <div class="cv-item">
+          <div class="cv-item-title">{award.title}</div>
+          <div class="cv-item-subtitle">{award.detail}</div>
+          <div class="cv-item-date">{award.year}</div>
+        </div>
+      ))}
+    </section>
+  )}
+
   <section class="cv-section">
     <h2 class="section-title">{t(lang, 'cv.skills')}</h2>
     <div class="skills-grid">
