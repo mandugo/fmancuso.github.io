@@ -9,24 +9,11 @@ interface Props {
 
 const { lang } = Astro.props;
 const year = new Date().getFullYear();
-
-const socialLinks = Object.entries(siteConfig.social)
-  .filter(([, value]) => value)
-  .map(([key, value]) => {
-    const href = key === 'email' ? `mailto:${value}` : value;
-    const label = key.charAt(0).toUpperCase() + key.slice(1);
-    return { href, label };
-  });
 ---
 
 <footer class="site-footer">
   <div class="footer-divider"></div>
   <div class="container footer-inner">
-    <div class="footer-links">
-      {socialLinks.map(({ href, label }) => (
-        <a href={href} target={href.startsWith('mailto:') ? undefined : '_blank'} rel="noopener noreferrer">{label}</a>
-      ))}
-    </div>
     <p class="footer-copy">&copy; {year} {siteConfig.name}. {t(lang, 'footer.rights')}</p>
     <p class="footer-llm">{t(lang, 'footer.llm')}</p>
   </div>
@@ -47,30 +34,6 @@ const socialLinks = Object.entries(siteConfig.social)
 
   .footer-inner {
     text-align: center;
-  }
-
-  .footer-links {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--space-md);
-    margin-bottom: var(--space-md);
-  }
-
-  .footer-links a {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-  }
-
-  .footer-links a:not(:last-child)::after {
-    content: ' · ';
-    margin-left: var(--space-sm);
-    color: var(--text-muted);
-    opacity: 0.8;
-  }
-
-  .footer-links a:hover {
-    color: var(--accent);
   }
 
   .footer-copy {
