@@ -13,6 +13,7 @@ export interface Publication {
   year: number;
   doi?: string;
   url?: string;
+  note?: string;
 }
 
 const UMLAUT_MAP: Record<string, string> = {
@@ -98,6 +99,7 @@ export function getPublications(): Publication[] {
       year: yearNum,
       doi: e.doi || undefined,
       url: e.url || (e.doi ? `https://doi.org/${e.doi}` : undefined),
+      note: e.note ? cleanLatex(e.note.trim()) : undefined,
     });
   }
 

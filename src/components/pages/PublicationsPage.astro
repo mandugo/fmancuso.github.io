@@ -74,9 +74,12 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': jsonLdItems };
                 {pub.venue}{pub.venue && ','}{' '}
                 <span class="pub-year">{pub.year}</span>
                 {pub.url && (
-                  <a href={pub.url} class="pub-link" target="_blank" rel="noopener noreferrer">[DOI]</a>
+                  <a href={pub.url} class="pub-link" target="_blank" rel="noopener noreferrer">
+                    {pub.doi ? '[DOI]' : '[Link]'}
+                  </a>
                 )}
               </div>
+              {pub.note && <div class="pub-note">{pub.note}</div>}
             </div>
           ))}
       </section>

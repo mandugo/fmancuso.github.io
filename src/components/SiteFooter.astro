@@ -9,7 +9,6 @@ interface Props {
 
 const { lang } = Astro.props;
 const year = new Date().getFullYear();
-const rssHref = lang === 'en' ? '/rss.xml' : '/it/rss.xml';
 
 const socialLinks = Object.entries(siteConfig.social)
   .filter(([, value]) => value)
@@ -27,7 +26,6 @@ const socialLinks = Object.entries(siteConfig.social)
       {socialLinks.map(({ href, label }) => (
         <a href={href} target={href.startsWith('mailto:') ? undefined : '_blank'} rel="noopener noreferrer">{label}</a>
       ))}
-      <a href={rssHref}>{t(lang, 'footer.rss')}</a>
     </div>
     <p class="footer-copy">&copy; {year} {siteConfig.name}. {t(lang, 'footer.rights')}</p>
     <p class="footer-llm">{t(lang, 'footer.llm')}</p>

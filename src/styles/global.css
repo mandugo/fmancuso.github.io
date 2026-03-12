@@ -383,8 +383,8 @@ a.tag:hover {
   color: #1b5e20;
 }
 [data-theme="dark"] .pub-badge--conference {
-  background: #064e3b;
-  border-color: #4ade80;
+  background: #052e16;
+  border-color: #22c55e;
   color: #bbf7d0;
 }
 
@@ -430,6 +430,13 @@ a.tag:hover {
 .pub-link {
   font-size: 0.85rem;
   margin-left: var(--space-sm);
+}
+
+.pub-note {
+  margin-top: var(--space-xs);
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--text-muted);
 }
 
 /* ========================================
@@ -571,9 +578,7 @@ a.tag:hover {
    Print Styles
    ======================================== */
 
-.no-print {
-  /* visible on screen */
-}
+
 
 @media print {
   @page {
