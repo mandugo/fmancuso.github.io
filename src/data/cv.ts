@@ -13,11 +13,15 @@ export interface CvData {
     location: string;
     date: string;
     description?: string;
+    thesis?: string;
+    finalMark?: string;
+    href?: string;
   }[];
   awards: {
     year: string;
     title: string;
     detail: string;
+    href?: string;
   }[];
   skills: {
     category: string;
@@ -37,29 +41,83 @@ export const cv: Record<'en' | 'it', CvData> = {
     experience: [
       {
         title: 'Researcher',
-        organization: 'RaSS National Laboratory — CNIT',
+        organization: 'RaSS National Lab, CNIT',
         location: 'Pisa, Italy',
-        date: '2022 – Present',
+        date: 'Mar 2025 – Present',
         description:
-          'Research on 3D interferometric ISAR imaging, polarimetric radar signal processing, and automatic target recognition. Contributing to NATO SPS projects on counter-drone systems. Published in IEEE Transactions on Radar Systems, IEEE Transactions on Computational Imaging, and IEEE Access.',
+          'Electronic Warfare, C-ESM, Array Processing.',
+      },
+      {
+        title: 'Research Collaborator',
+        organization: 'RaSS National Lab, CNIT',
+        location: 'Pisa, Italy',
+        date: 'Sep 2021 – Feb 2025',
+        description:
+          'Radar Interferometry, Radar Polarimetry, ISAR Imaging, Multi-channel Radar, Synchronization.',
+      },
+      {
+        title: 'Digital Signal Processing Tutor',
+        organization: 'University of Adelaide',
+        location: 'Adelaide, Australia',
+        date: 'Jul 2023 – Dec 2023',
+        description:
+          'Standard Tutorial, Marking.',
+      },
+      {
+        title: 'R&D Engineer',
+        organization: 'Move Solutions',
+        location: 'Lucca, Italy',
+        date: 'Jan 2019 – Jan 2020',
+        description:
+          'Statistical Signal Processing, Anomalies Detection, Structure Health Monitoring, Wireless Sensors Networks, Electromagnetic Compatibility.',
       },
     ],
     education: [
       {
+        degree: 'Visiting fellow',
+        institution: 'Adelaide Radar Research Centre, University of Adelaide',
+        location: 'Adelaide, Australia',
+        date: '2023 – 2024',
+        href: 'https://www.adelaide.edu.au/radar/people#students',
+      },
+      {
+        degree: 'Qualification to the Profession',
+        institution: 'University of Pisa',
+        location: 'Pisa, Italy',
+        date: '2022',
+        description: 'Information Engineering Sector, Section A',
+      },
+      {
         degree: 'Ph.D. in Information Engineering',
         institution: 'University of Pisa',
         location: 'Pisa, Italy',
-        date: '2021 – 2025',
-        description:
-          'Thesis: "Novel 3D Interferometric Inverse Synthetic Aperture Radar Imaging Techniques for Non-Cooperative Target Recognition"',
+        date: '2021 – 2024',
+        thesis: 'Novel 3D Interferometric Inverse Synthetic Aperture Radar Imaging Techniques for Non-Cooperative Target Recognition',
+        finalMark: 'Excellent',
       },
       {
-        degree: 'M.Sc. in Telecommunications Engineering',
+        degree: 'M.Sc. Telecommunications Engineering',
         institution: 'University of Pisa',
         location: 'Pisa, Italy',
-        date: '2019 – 2021',
-        description:
-          'Thesis: "Sviluppo e validazione di tecniche di formazione di ISAR tridimensionali polarimetriche"',
+        date: '2018 – 2021',
+        thesis: 'Development and validation of Polarimetric Three-Dimensional ISAR imaging techniques.',
+        finalMark: '110/110 cum laude',
+      },
+      {
+        degree: 'B.Sc. Telecommunications Engineering',
+        institution: 'University of Pisa',
+        location: 'Pisa, Italy',
+        date: '2013 – 2017',
+        thesis: 'IoT-based botnet and DNS DDoS Attacks: Dyn\'s case analysis.',
+        finalMark: '108/110',
+      },
+      {
+        degree: 'High School Diploma',
+        institution: 'I.T.I. "E.Scalfaro"',
+        location: 'Catanzaro, Italy',
+        date: '2008 – 2013',
+        description: 'Industrial Engineering: Electronic and Telecommunications',
+        finalMark: '100/100',
       },
     ],
     awards: [
@@ -77,6 +135,28 @@ export const cv: Record<'en' | 'it', CvData> = {
         year: '2024',
         title: 'Research, Technology and Innovation Paper Award 2024',
         detail: 'Eurosatory 2024 — issued by the European Defence Agency.',
+      },
+      {
+        year: '2024',
+        title: 'NATO SET Panel Best Paper Award',
+        detail: 'SET-318 Specialists\' Meeting on "Artificial Intelligence (AI) / Machine Learning (ML) for Cognitive Radar (CR)" — issued by NATO Sensors and Electronics Technology Panel.',
+      },
+      {
+        year: '2023',
+        title: 'Student Travel Grant',
+        detail: 'IEEE LCN 2023 — issued by IEEE Computer Society TCCC.',
+      },
+      {
+        year: '2024',
+        title: 'ICT 2024 (16th ICT Innovations Conference 2024), Online.',
+        detail: 'Organizing Committee Member. Presentation: "Evaluating Killer Drone Defense: NATO SPS Project Anti-Drones Field Trials".',
+        href: 'https://ictinnovations.org/workshop/workshop-innovations-anti-drone-tech',
+      },
+      {
+        year: '2024',
+        title: 'IEEE CAES South Australia Invited Talk, Online.',
+        detail: 'Presentation: "Novel Techniques for 3D Interferometric Inverse Synthetic Aperture Radar".',
+        href: 'https://r10.ieee.org/saus/event/novel-techniques-for-3d-interferometric-inverse-synthetic-aperture-radar/',
       },
     ],
     skills: [
@@ -115,29 +195,83 @@ export const cv: Record<'en' | 'it', CvData> = {
     experience: [
       {
         title: 'Ricercatore',
-        organization: 'Laboratorio Nazionale RaSS — CNIT',
+        organization: 'Laboratorio Nazionale RaSS, CNIT',
         location: 'Pisa, Italia',
-        date: '2022 – Presente',
+        date: 'Mar 2025 – Presente',
         description:
-          'Ricerca su imaging ISAR interferometrico 3D, elaborazione polarimetrica del segnale radar e riconoscimento automatico di bersagli. Contributi a progetti NATO SPS su sistemi anti-drone. Pubblicazioni su IEEE Transactions on Radar Systems, IEEE Transactions on Computational Imaging e IEEE Access.',
+          'Electronic Warfare, C-ESM, Array Processing.',
+      },
+      {
+        title: 'Collaboratore di Ricerca',
+        organization: 'Laboratorio Nazionale RaSS, CNIT',
+        location: 'Pisa, Italia',
+        date: 'Set 2021 – Feb 2025',
+        description:
+          'Radar Interferometry, Radar Polarimetry, ISAR Imaging, Multi-channel Radar, Synchronization.',
+      },
+      {
+        title: 'Tutor di Digital Signal Processing',
+        organization: 'University of Adelaide',
+        location: 'Adelaide, Australia',
+        date: 'Lug 2023 – Dic 2023',
+        description:
+          'Standard Tutorial, Marking.',
+      },
+      {
+        title: 'Ingegnere R&D',
+        organization: 'Move Solutions',
+        location: 'Lucca, Italia',
+        date: 'Gen 2019 – Gen 2020',
+        description:
+          'Statistical Signal Processing, Anomalies Detection, Structure Health Monitoring, Wireless Sensors Networks, Electromagnetic Compatibility.',
       },
     ],
     education: [
       {
+        degree: 'Visiting fellow',
+        institution: 'Adelaide Radar Research Centre, University of Adelaide',
+        location: 'Adelaide, Australia',
+        date: '2023 – 2024',
+        href: 'https://www.adelaide.edu.au/radar/people#students',
+      },
+      {
+        degree: 'Abilitazione alla Professione',
+        institution: 'Università di Pisa',
+        location: 'Pisa, Italia',
+        date: '2022',
+        description: 'Settore Ingegneria dell\'Informazione, Sezione A',
+      },
+      {
         degree: 'Dottorato in Ingegneria dell\'Informazione',
         institution: 'Università di Pisa',
         location: 'Pisa, Italia',
-        date: '2021 – 2025',
-        description:
-          'Tesi: "Novel 3D Interferometric Inverse Synthetic Aperture Radar Imaging Techniques for Non-Cooperative Target Recognition"',
+        date: '2021 – 2024',
+        thesis: 'Novel 3D Interferometric Inverse Synthetic Aperture Radar Imaging Techniques for Non-Cooperative Target Recognition',
+        finalMark: 'Excellent',
       },
       {
         degree: 'Laurea Magistrale in Ingegneria delle Telecomunicazioni',
         institution: 'Università di Pisa',
         location: 'Pisa, Italia',
-        date: '2019 – 2021',
-        description:
-          'Tesi: "Sviluppo e validazione di tecniche di formazione di ISAR tridimensionali polarimetriche"',
+        date: '2018 – 2021',
+        thesis: 'Sviluppo e validazione di tecniche di formazione di ISAR tridimensionali polarimetriche.',
+        finalMark: '110/110 cum laude',
+      },
+      {
+        degree: 'Laurea Triennale in Ingegneria delle Telecomunicazioni',
+        institution: 'Università di Pisa',
+        location: 'Pisa, Italia',
+        date: '2013 – 2017',
+        thesis: 'IoT-based botnet and DNS DDoS Attacks: Dyn\'s case analysis.',
+        finalMark: '108/110',
+      },
+      {
+        degree: 'Diploma di Istruzione Secondaria Superiore',
+        institution: 'I.T.I. "E.Scalfaro"',
+        location: 'Catanzaro, Italia',
+        date: '2008 – 2013',
+        description: 'Perito Capotecnico: Elettronica e Telecomunicazioni',
+        finalMark: '100/100',
       },
     ],
     awards: [
@@ -155,6 +289,28 @@ export const cv: Record<'en' | 'it', CvData> = {
         year: '2024',
         title: 'Research, Technology and Innovation Paper Award 2024',
         detail: 'Eurosatory 2024 — European Defence Agency.',
+      },
+      {
+        year: '2024',
+        title: 'NATO SET Panel Best Paper Award',
+        detail: 'SET-318 Specialists\' Meeting on "Artificial Intelligence (AI) / Machine Learning (ML) for Cognitive Radar (CR)" — NATO Sensors and Electronics Technology Panel.',
+      },
+      {
+        year: '2023',
+        title: 'Student Travel Grant',
+        detail: 'IEEE LCN 2023 — IEEE Computer Society TCCC.',
+      },
+      {
+        year: '2024',
+        title: 'ICT 2024 (16th ICT Innovations Conference 2024), Online.',
+        detail: 'Membro del Comitato Organizzatore. Presentazione: "Evaluating Killer Drone Defense: NATO SPS Project Anti-Drones Field Trials".',
+        href: 'https://ictinnovations.org/workshop/workshop-innovations-anti-drone-tech',
+      },
+      {
+        year: '2024',
+        title: 'IEEE CAES South Australia Invited Talk, Online.',
+        detail: 'Presentazione: "Novel Techniques for 3D Interferometric Inverse Synthetic Aperture Radar".',
+        href: 'https://r10.ieee.org/saus/event/novel-techniques-for-3d-interferometric-inverse-synthetic-aperture-radar/',
       },
     ],
     skills: [

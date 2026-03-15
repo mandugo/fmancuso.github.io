@@ -451,60 +451,134 @@ a.tag:hover {
   margin-top: var(--space-xl);
 }
 
-.cv-item {
-  position: relative;
-  margin-bottom: var(--space-lg);
-  padding-left: calc(var(--space-md) + 4px);
-  border-left: 1px solid var(--border);
+/* Experience grouped by employer — pill header + soft indent, no section-like lines */
+.cv-employer-group {
+  margin-bottom: var(--space-xl);
 }
 
-.cv-item::before {
-  content: '';
-  position: absolute;
-  left: -3px;
-  top: 0.55rem;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-  opacity: 0.75;
+.cv-employer-group:last-child {
+  margin-bottom: 0;
 }
 
-.cv-item-title {
+.cv-employer-header {
+  display: inline-block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  padding: var(--space-xs) var(--space-md);
+  margin-bottom: var(--space-sm);
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg));
+  border-radius: 999px;
+}
+
+.cv-role {
+  margin-bottom: var(--space-md);
+  padding-left: var(--space-lg);
+  border-left: 1px dotted var(--border);
+  margin-left: 2px;
+}
+
+.cv-role:last-child {
+  margin-bottom: 0;
+}
+
+.cv-role-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xs);
+}
+
+.cv-role-title {
   font-weight: 600;
   font-size: 1.05rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
-.cv-item-subtitle {
+.cv-role-link-icon {
+  display: inline-flex;
   color: var(--text-muted);
-  font-size: 0.9rem;
-  margin-bottom: var(--space-xs);
+  transition: color var(--transition);
+  flex-shrink: 0;
 }
 
-.cv-item-date {
+.cv-role-link-icon:hover {
+  color: var(--accent);
+}
+
+.cv-role-date {
   font-size: 0.85rem;
   color: var(--text-muted);
+  font-style: italic;
 }
 
-.skills-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: var(--space-md);
+.cv-role-desc {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
 }
 
-.skill-group h4 {
-  font-size: 0.95rem;
+/* Skills: same pill + dotted list pattern */
+.cv-skills-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xl) var(--space-2xl);
+}
+
+.cv-skill-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  padding-left: var(--space-lg);
+  border-left: 1px dotted var(--border);
+  margin-left: 2px;
+}
+
+.cv-skill-list li {
+  font-size: 0.9rem;
+  color: var(--text-muted);
   margin-bottom: var(--space-xs);
 }
 
-.skill-group ul {
+.cv-skill-list li:last-child {
+  margin-bottom: 0;
+}
+
+/* Contact: label as pill, same visual language */
+.contact-list {
   list-style: none;
   padding: 0;
 }
 
-.skill-group li {
+.cv-contact-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.cv-contact-item:last-child {
+  margin-bottom: 0;
+}
+
+.cv-contact-label {
+  display: inline-block;
+  font-weight: 600;
   font-size: 0.9rem;
   color: var(--text-muted);
+  padding: var(--space-xs) var(--space-md);
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg));
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.cv-contact-item a,
+.cv-contact-item span {
+  font-size: 0.95rem;
 }
 
 /* ========================================
@@ -682,84 +756,130 @@ a.tag:hover {
   }
 
   .section-title {
-    font-size: 11.5pt;
+    font-size: 12pt;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     border-left: none;
     padding-left: 0;
-    border-bottom: 0.5pt solid #999;
-    padding-bottom: 0.2em;
-    margin-bottom: 0.6em;
+    border-bottom: 1.25pt solid #333;
+    padding-bottom: 0.35em;
+    margin-bottom: 0.75em;
+    margin-top: 0.25em;
+    break-after: avoid;
+    color: #000;
   }
 
-  /* ── CV items ── */
+  /* ── CV sections: clearer separation ── */
 
   .cv-section {
-    margin-bottom: 1em;
+    margin-bottom: 1.4em;
+    break-inside: avoid;
   }
 
-  .cv-item {
-    margin-bottom: 0.7em;
-    padding-left: 0;
-    border-left: none;
+  .cv-section:first-of-type {
+    margin-top: 0;
   }
 
-  .cv-item::before {
-    display: none;
-  }
-
-  .cv-item-title {
-    font-size: 10.5pt;
-    font-weight: 700;
-  }
-
-  .cv-item-subtitle {
+  /* Profile block: subtle box so it reads as summary ── */
+  .cv-section:first-of-type p {
+    background: #f5f5f5;
+    padding: 0.6em 0.75em;
+    border-radius: 2px;
+    border-left: 3pt solid #333;
+    margin: 0;
     font-size: 9.5pt;
-    color: #333;
-    margin-bottom: 0.1em;
+    line-height: 1.5;
   }
 
-  .cv-item-date {
+  .cv-employer-group {
+    margin-bottom: 1em;
+    break-inside: avoid;
+    padding: 0.4em 0;
+    border-bottom: 0.5pt solid #e0e0e0;
+  }
+
+  .cv-employer-group:last-child {
+    border-bottom: none;
+  }
+
+  .cv-employer-header {
+    display: inline-block;
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: #222;
+    padding: 0.2em 0.6em;
+    margin-bottom: 0.4em;
+    background: #e0e0e0;
+    border: 0.5pt solid #bbb;
+    border-radius: 999px;
+  }
+
+  .cv-role {
+    margin-bottom: 0.45em;
+    padding-left: 0.6em;
+    border-left: 1.5pt dotted #666;
+    margin-left: 2px;
+    break-inside: avoid;
+  }
+
+  .cv-role-head {
+    gap: 0.3em;
+  }
+
+  .cv-role-title {
+    font-size: 10pt;
+    font-weight: 700;
+    color: #000;
+  }
+
+  .cv-role-date {
     font-size: 9pt;
-    color: #555;
+    color: #444;
     font-style: italic;
   }
 
-  .cv-item p {
-    font-size: 9.5pt;
-    margin-top: 0.2em;
-    margin-bottom: 0;
+  .cv-role-desc {
+    font-size: 9pt;
     color: #222;
-  }
-
-  .cv-item {
-    break-inside: avoid;
+    margin-top: 0.15em;
   }
 
   /* ── Skills ── */
 
-  .skills-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.6em;
+  .cv-skills-wrap {
+    gap: 0.6em 1.2em;
   }
 
-  .skill-group h4 {
-    font-size: 9.5pt;
-    font-weight: 700;
-    margin-bottom: 0.15em;
+  .cv-skill-list {
+    padding-left: 0.5em;
+    border-left: 1pt dotted #999;
   }
 
-  .skill-group li {
+  .cv-skill-list li {
     font-size: 9pt;
     color: #222;
-    line-height: 1.4;
   }
 
-  /* ── Contact ── */
+  /* ── Contact (hidden in PDF; already in print header) ── */
 
-  .contact-list li {
+  .cv-contact-section {
+    display: none !important;
+  }
+
+  .cv-contact-item {
+    margin-bottom: 0.3em;
+  }
+
+  .cv-contact-label {
+    font-size: 9pt;
+    padding: 0.1em 0.4em;
+    background: #e8e8e8;
+  }
+
+  .cv-contact-item a,
+  .cv-contact-item span {
     font-size: 9.5pt;
-    margin-bottom: 0.2em;
   }
 
   /* ── Links ── */

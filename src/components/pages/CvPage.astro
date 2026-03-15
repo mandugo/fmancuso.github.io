@@ -9,6 +9,57 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const data = cv[lang];
 const currentPath = langPath(lang, '/cv');
+
+// Group experience by employer (organization + location) so same employer appears once
+const experienceByEmployer = data.experience.reduce(
+  (acc, item) => {
+    const key = `${item.organization}|${item.location}`;
+    if (!acc[key]) {
+      acc[key] = { organization: item.organization, location: item.location, roles: [] };
+    }
+    acc[key].roles.push({
+      title: item.title,
+      date: item.date,
+      description: item.description,
+    });
+    return acc;
+  },
+  {} as Record<string, { organization: string; location: string; roles: { title: string; date: string; description: string }[] }>
+);
+const experienceGroups = Object.values(experienceByEmployer);
+
+// Group education by institution (same pattern as experience — pill + dotted roles)
+const educationByInstitution = data.education.reduce(
+  (acc, item) => {
+    const key = `${item.institution}|${item.location}`;
+    if (!acc[key]) {
+      acc[key] = { institution: item.institution, location: item.location, entries: [] };
+    }
+    acc[key].entries.push({
+      degree: item.degree,
+      date: item.date,
+      description: item.description,
+      thesis: item.thesis,
+      finalMark: item.finalMark,
+      href: item.href,
+    });
+    return acc;
+  },
+  {} as Record<string, { institution: string; location: string; entries: { degree: string; date: string; description?: string; thesis?: string; finalMark?: string; href?: string }[] }>
+);
+const educationGroups = Object.values(educationByInstitution);
+
+// Group awards by year
+const awardsByYear = (data.awards ?? []).reduce(
+  (acc, award) => {
+    const y = award.year;
+    if (!acc[y]) acc[y] = [];
+    acc[y].push({ title: award.title, detail: award.detail, href: award.href });
+    return acc;
+  },
+  {} as Record<string, { title: string; detail: string; href?: string }[]>
+);
+const awardYears = Object.keys(awardsByYear).sort((a, b) => Number(b) - Number(a));
 ---
 
 <BaseLayout
@@ -45,24 +96,59 @@ const currentPath = langPath(lang, '/cv');
 
   <section class="cv-section">
     <h2 class="section-title">{t(lang, 'cv.experience')}</h2>
-    {data.experience.map((item) => (
-      <div class="cv-item">
-        <div class="cv-item-title">{item.title}</div>
-        <div class="cv-item-subtitle">{item.organization} &middot; {item.location}</div>
-        <div class="cv-item-date">{item.date}</div>
-        <p>{item.description}</p>
+    {experienceGroups.map((group) => (
+      <div class="cv-employer-group">
+        <div class="cv-employer-header">{group.organization} &middot; {group.location}</div>
+        {group.roles.map((role) => (
+          <div class="cv-role">
+            <div class="cv-role-head">
+              <span class="cv-role-title">{role.title}</span>
+              <span class="cv-role-date">{role.date}</span>
+            </div>
+            <p class="cv-role-desc">{role.description}</p>
+          </div>
+        ))}
       </div>
     ))}
   </section>
 
   <section class="cv-section">
     <h2 class="section-title">{t(lang, 'cv.education')}</h2>
-    {data.education.map((item) => (
-      <div class="cv-item">
-        <div class="cv-item-title">{item.degree}</div>
-        <div class="cv-item-subtitle">{item.institution} &middot; {item.location}</div>
-        <div class="cv-item-date">{item.date}</div>
-        {item.description && <p>{item.description}</p>}
+    {educationGroups.map((group) => (
+      <div class="cv-employer-group">
+        <div class="cv-employer-header">{group.institution} &middot; {group.location}</div>
+        {group.entries.map((entry) => (
+          <div class="cv-role">
+            <div class="cv-role-head">
+              <span class="cv-role-title">
+                {entry.degree}
+                {entry.href && (
+                  <a class="cv-role-link-icon" href={entry.href} target="_blank" rel="noopener noreferrer" aria-label="Open link">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                      <polyline points="15 3 21 3 21 9"/>
+                      <line x1="10" y1="14" x2="21" y2="3"/>
+                    </svg>
+                  </a>
+                )}
+              </span>
+              <span class="cv-role-date">{entry.date}</span>
+            </div>
+            {entry.description && <p class="cv-role-desc">{entry.description}</p>}
+            {entry.thesis && (
+              <p class="cv-role-desc">
+                {lang === 'en' ? 'Thesis title: ' : 'Titolo tesi: '}
+                <em>{entry.thesis}</em>
+              </p>
+            )}
+            {entry.finalMark && (
+              <p class="cv-role-desc">
+                {lang === 'en' ? 'Final mark: ' : 'Voto: '}
+                {entry.finalMark}
+              </p>
+            )}
+          </div>
+        ))}
       </div>
     ))}
   </section>
@@ -70,39 +156,40 @@ const currentPath = langPath(lang, '/cv');
   {data.awards && data.awards.length > 0 && (
     <section class="cv-section">
       <h2 class="section-title">{t(lang, 'cv.awards')}</h2>
-      {data.awards.map((award) => (
-        <div class="cv-item">
-          <div class="cv-item-title">{award.title}</div>
-          <div class="cv-item-subtitle">{award.detail}</div>
-          <div class="cv-item-date">{award.year}</div>
+      {awardYears.map((year) => (
+        <div class="cv-employer-group">
+          <div class="cv-employer-header">{year}</div>
+          {awardsByYear[year].map((award) => (
+            <div class="cv-role">
+              <div class="cv-role-head">
+                <span class="cv-role-title">
+                  {award.title}
+                  {award.href && (
+                    <a class="cv-role-link-icon" href={award.href} target="_blank" rel="noopener noreferrer" aria-label="Open link">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                        <polyline points="15 3 21 3 21 9"/>
+                        <line x1="10" y1="14" x2="21" y2="3"/>
+                      </svg>
+                    </a>
+                  )}
+                </span>
+              </div>
+              <p class="cv-role-desc">{award.detail}</p>
+            </div>
+          ))}
         </div>
       ))}
     </section>
   )}
 
-  <section class="cv-section">
-    <h2 class="section-title">{t(lang, 'cv.skills')}</h2>
-    <div class="skills-grid">
-      {data.skills.map((group) => (
-        <div class="skill-group">
-          <h4>{group.category}</h4>
-          <ul>
-            {group.items.map((item) => (
-              <li>{item}</li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <section class="cv-section">
+  <section class="cv-section cv-contact-section">
     <h2 class="section-title">{t(lang, 'cv.contact')}</h2>
     <ul class="contact-list">
       {data.contact.map((c) => (
-        <li>
-          <strong>{c.label}:</strong>{' '}
-          {c.href ? <a href={c.href}>{c.value}</a> : c.value}
+        <li class="cv-contact-item">
+          <span class="cv-contact-label">{c.label}</span>
+          {c.href ? <a href={c.href}>{c.value}</a> : <span>{c.value}</span>}
         </li>
       ))}
     </ul>
@@ -135,13 +222,6 @@ const currentPath = langPath(lang, '/cv');
 
   .cv-print-header {
     display: none;
-  }
-  .contact-list {
-    list-style: none;
-    padding: 0;
-  }
-  .contact-list li {
-    margin-bottom: var(--space-sm);
   }
 </style>
 
