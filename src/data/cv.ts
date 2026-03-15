@@ -21,6 +21,7 @@ export interface CvData {
     year: string;
     title: string;
     detail: string;
+    description?: string;
     href?: string;
   }[];
   skills: {
@@ -130,6 +131,7 @@ export const cv: Record<'en' | 'it', CvData> = {
         year: '2025',
         title: 'NATO SET Panel Early Career Award (SPECA)',
         detail: 'Joint SET–SCI Spring PBM 2025 — issued by NATO STO Sensors and Electronics Technology (SET) Panel.',
+        description: 'For his significant scientific contribution in the Exploratory Team SET-ET-128, which evolved into SET-335, "RFT-OT Data and Sharing Hub (DASH)." As co-chair, he was instrumental in developing a NATO-internal database for high-quality sensor datasets, which supported NATO\'s Digital Transformation by enabling the integration of emerging technologies like AI. His efforts exemplify the collaborative spirit and forward-thinking essential to NATO\'s mission.',
       },
       {
         year: '2024',
@@ -284,6 +286,7 @@ export const cv: Record<'en' | 'it', CvData> = {
         year: '2025',
         title: 'NATO SET Panel Early Career Award (SPECA)',
         detail: 'Joint SET–SCI Spring PBM 2025 — NATO STO Sensors and Electronics Technology (SET) Panel.',
+        description: 'For his significant scientific contribution in the Exploratory Team SET-ET-128, which evolved into SET-335, "RFT-OT Data and Sharing Hub (DASH)." As co-chair, he was instrumental in developing a NATO-internal database for high-quality sensor datasets, which supported NATO\'s Digital Transformation by enabling the integration of emerging technologies like AI. His efforts exemplify the collaborative spirit and forward-thinking essential to NATO\'s mission.',
       },
       {
         year: '2024',

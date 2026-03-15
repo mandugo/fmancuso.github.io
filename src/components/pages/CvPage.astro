@@ -54,10 +54,10 @@ const awardsByYear = (data.awards ?? []).reduce(
   (acc, award) => {
     const y = award.year;
     if (!acc[y]) acc[y] = [];
-    acc[y].push({ title: award.title, detail: award.detail, href: award.href });
+    acc[y].push({ title: award.title, detail: award.detail, description: award.description, href: award.href });
     return acc;
   },
-  {} as Record<string, { title: string; detail: string; href?: string }[]>
+  {} as Record<string, { title: string; detail: string; description?: string; href?: string }[]>
 );
 const awardYears = Object.keys(awardsByYear).sort((a, b) => Number(b) - Number(a));
 ---
@@ -176,6 +176,11 @@ const awardYears = Object.keys(awardsByYear).sort((a, b) => Number(b) - Number(a
                 </span>
               </div>
               <p class="cv-role-desc">{award.detail}</p>
+              {award.description && (
+                <div class="cv-award-citation">
+                  <p class="cv-award-citation-text">{award.description}</p>
+                </div>
+              )}
             </div>
           ))}
         </div>

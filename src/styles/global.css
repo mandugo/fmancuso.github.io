@@ -521,6 +521,20 @@ a.tag:hover {
   color: var(--text-muted);
 }
 
+.cv-award-citation {
+  margin-top: var(--space-sm);
+  padding-left: var(--space-md);
+  border-left: 3px solid var(--border);
+}
+
+.cv-award-citation-text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-style: italic;
+  line-height: 1.5;
+}
+
 /* Skills: same pill + dotted list pattern */
 .cv-skills-wrap {
   display: flex;
@@ -843,6 +857,18 @@ a.tag:hover {
     font-size: 9pt;
     color: #222;
     margin-top: 0.15em;
+  }
+
+  .cv-award-citation {
+    margin-top: 0.4em;
+    padding-left: 0.5em;
+    border-left: 1.5pt solid #999;
+  }
+
+  .cv-award-citation-text {
+    font-size: 8.5pt;
+    color: #333;
+    font-style: italic;
   }
 
   /* ── Skills ── */
