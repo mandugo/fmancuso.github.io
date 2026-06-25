@@ -38,7 +38,7 @@ export interface CvData {
 export const cv: Record<'en' | 'it', CvData> = {
   en: {
     profile:
-      'Researcher at RaSS (Radar and Surveillance Systems) National Laboratory of CNIT, with expertise in radar imaging, 3D interferometric ISAR, polarimetry, and remote sensing. Chartered Professional Engineer registered with the Order of Engineers of the Province of Pisa (Section A – Information Engineering, licensed in 2022 and registered since 2023). Author of 15+ publications in IEEE journals and international conferences. Research focuses on non-cooperative target recognition, advanced signal processing techniques for radar systems, and AI-driven radar cybersecurity.',
+      'I\'m a researcher at CNIT\'s RaSS National Lab in Pisa, where I also completed my PhD. My doctoral work focused on 3D radar imaging and on applying AI to recognize non-cooperative targets. I continue to follow that line of research, though my focus has since moved toward electronic warfare and cognitive systems.',
     experience: [
       {
         title: 'Researcher',
@@ -192,7 +192,7 @@ export const cv: Record<'en' | 'it', CvData> = {
 
   it: {
     profile:
-      'Ricercatore presso il Laboratorio Nazionale RaSS (Radar and Surveillance Systems) del CNIT, con competenze in radar imaging, ISAR interferometrico 3D, polarimetria e telerilevamento. Ingegnere iscritto all’Ordine degli Ingegneri della Provincia di Pisa (Sezione A – Ingegneria dell’Informazione, abilitato nel 2022 e iscritto dal 2023). Autore di oltre 15 pubblicazioni su riviste IEEE e conferenze internazionali. La ricerca si concentra sul riconoscimento di bersagli non cooperativi, tecniche avanzate di elaborazione del segnale radar e cybersecurity radar basata su AI.',
+      'Sono un ricercatore al Laboratorio Nazionale RaSS del CNIT, a Pisa, dove ho anche conseguito il dottorato. Il mio lavoro di dottorato si è concentrato sull\'imaging radar 3D e sull\'applicazione dell\'AI per riconoscere bersagli non cooperanti. Continuo a seguire questa linea di ricerca, anche se il mio focus si è spostato verso la guerra elettronica e i sistemi cognitivi.',
     experience: [
       {
         title: 'Ricercatore',
@@ -278,7 +278,7 @@ export const cv: Record<'en' | 'it', CvData> = {
       {
         year: '2025',
         title: 'IEEE AESS Radar Challenge 2025 Winner - Third Place',
-        detail: 'IEEE Radar Conference 2025 — issued byIEEE Aerospace and Electronic Systems Society (AESS).',
+        detail: 'IEEE Radar Conference 2025 — issued by IEEE Aerospace and Electronic Systems Society (AESS).',
       },
       {
         year: '2025',
