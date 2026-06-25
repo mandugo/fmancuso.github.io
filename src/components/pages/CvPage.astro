@@ -60,6 +60,56 @@ const awardsByYear = (data.awards ?? []).reduce(
   {} as Record<string, { title: string; detail: string; description?: string; href?: string }[]>
 );
 const awardYears = Object.keys(awardsByYear).sort((a, b) => Number(b) - Number(a));
+
+// ── Contact obfuscation (Tier 1) ─────────────────────────
+// Contact details are base64-encoded at build time so no readable
+// address ends up in the static HTML. They are decoded client-side
+// only after the visitor reveals them (or when printing the CV).
+const B64_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+function toBase64(input: string): string {
+  const bytes: number[] = [];
+  for (let i = 0; i < input.length; i++) {
+    const code = input.charCodeAt(i);
+    if (code < 0x80) {
+      bytes.push(code);
+    } else if (code < 0x800) {
+      bytes.push(0xc0 | (code >> 6), 0x80 | (code & 0x3f));
+    } else {
+      bytes.push(0xe0 | (code >> 12), 0x80 | ((code >> 6) & 0x3f), 0x80 | (code & 0x3f));
+    }
+  }
+  let out = '';
+  for (let i = 0; i < bytes.length; i += 3) {
+    const b0 = bytes[i];
+    const b1 = i + 1 < bytes.length ? bytes[i + 1] : 0;
+    const b2 = i + 2 < bytes.length ? bytes[i + 2] : 0;
+    out += B64_ALPHABET[b0 >> 2];
+    out += B64_ALPHABET[((b0 & 3) << 4) | (b1 >> 4)];
+    out += i + 1 < bytes.length ? B64_ALPHABET[((b1 & 15) << 2) | (b2 >> 6)] : '=';
+    out += i + 2 < bytes.length ? B64_ALPHABET[b2 & 63] : '=';
+  }
+  return out;
+}
+
+const contactPayload = {
+  contact: data.contact.map((c) => ({
+    label: toBase64(c.label),
+    value: toBase64(c.value),
+    href: c.href ? toBase64(c.href) : '',
+  })),
+  header: {
+    email: siteConfig.social.email ? toBase64(siteConfig.social.email) : '',
+    scholar: siteConfig.social.scholar ? toBase64(siteConfig.social.scholar) : '',
+    github: siteConfig.social.github ? toBase64(siteConfig.social.github) : '',
+  },
+};
+const contactJson = JSON.stringify(contactPayload);
+
+const revealLabel = lang === 'en' ? 'Reveal contact details' : 'Mostra i contatti';
+const noscriptText =
+  lang === 'en'
+    ? 'Please enable JavaScript to view the contact details.'
+    : 'Abilita JavaScript per visualizzare i contatti.';
 ---
 
 <BaseLayout
@@ -71,13 +121,7 @@ const awardYears = Object.keys(awardsByYear).sort((a, b) => Number(b) - Number(a
   <div class="cv-print-header">
     <h1 class="cv-print-name">{siteConfig.name}</h1>
     <p class="cv-print-role">{siteConfig.role[lang]}</p>
-    <p class="cv-print-contact">
-      {siteConfig.social.email}
-      {siteConfig.social.scholar && <span class="cv-print-sep"> | </span>}
-      {siteConfig.social.scholar && <Fragment>Scholar: {siteConfig.social.scholar}</Fragment>}
-      {siteConfig.social.github && <span class="cv-print-sep"> | </span>}
-      {siteConfig.social.github && <Fragment>GitHub: {siteConfig.social.github}</Fragment>}
-    </p>
+    <p class="cv-print-contact" id="print-contact"></p>
   </div>
 
   <div class="cv-title-row">
@@ -190,14 +234,12 @@ const awardYears = Object.keys(awardsByYear).sort((a, b) => Number(b) - Number(a
 
   <section class="cv-section cv-contact-section">
     <h2 class="section-title">{t(lang, 'cv.contact')}</h2>
-    <ul class="contact-list">
-      {data.contact.map((c) => (
-        <li class="cv-contact-item">
-          <span class="cv-contact-label">{c.label}</span>
-          {c.href ? <a href={c.href}>{c.value}</a> : <span>{c.value}</span>}
-        </li>
-      ))}
-    </ul>
+    <div id="contact-gate" class="contact-gate no-print">
+      <button id="reveal-contact" class="btn" type="button">{revealLabel}</button>
+      <noscript><p class="contact-gate-text">{noscriptText}</p></noscript>
+    </div>
+    <ul class="contact-list" id="contact-list" hidden></ul>
+    <script type="application/json" id="contact-data" set:html={contactJson}></script>
   </section>
 </BaseLayout>
 
@@ -228,12 +270,114 @@ const awardYears = Object.keys(awardsByYear).sort((a, b) => Number(b) - Number(a
   .cv-print-header {
     display: none;
   }
+
+  .contact-gate {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  /* Author display rules override the default [hidden] behaviour, so hide explicitly. */
+  .contact-gate[hidden] {
+    display: none;
+  }
+
+  .contact-gate-text {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
 </style>
 
 <script>
-  function initPrintBtn() {
-    document.getElementById('print-cv')?.addEventListener('click', () => window.print());
+  function fromBase64(b64: string): string {
+    if (!b64) return '';
+    try {
+      return decodeURIComponent(
+        Array.prototype.map
+          .call(atob(b64), (c: string) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+    } catch {
+      return '';
+    }
   }
-  initPrintBtn();
-  document.addEventListener('astro:after-swap', initPrintBtn);
+
+  // Decodes the obfuscated contact details and renders them in place.
+  // Idempotent: safe to call multiple times (reveal click, print, etc.).
+  function revealContacts() {
+    const dataEl = document.getElementById('contact-data');
+    if (!dataEl || !dataEl.textContent) return;
+
+    let payload: {
+      contact?: { label: string; value: string; href: string }[];
+      header?: { email?: string; scholar?: string; github?: string };
+    } = {};
+    try {
+      payload = JSON.parse(dataEl.textContent);
+    } catch {
+      return;
+    }
+
+    const list = document.getElementById('contact-list') as HTMLUListElement | null;
+    const gate = document.getElementById('contact-gate');
+    if (list && list.hidden) {
+      list.innerHTML = '';
+      (payload.contact ?? []).forEach((entry) => {
+        const li = document.createElement('li');
+        li.className = 'cv-contact-item';
+
+        const label = document.createElement('span');
+        label.className = 'cv-contact-label';
+        label.textContent = fromBase64(entry.label);
+        li.appendChild(label);
+
+        const value = fromBase64(entry.value);
+        const href = fromBase64(entry.href);
+        if (href) {
+          const a = document.createElement('a');
+          a.href = href;
+          a.textContent = value;
+          if (!href.startsWith('mailto:')) {
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+          }
+          li.appendChild(a);
+        } else {
+          const span = document.createElement('span');
+          span.textContent = value;
+          li.appendChild(span);
+        }
+        list.appendChild(li);
+      });
+      list.hidden = false;
+      if (gate) gate.hidden = true;
+    }
+
+    // Fill the print-only header so the exported PDF stays complete.
+    const printEl = document.getElementById('print-contact');
+    if (printEl && !printEl.textContent) {
+      const header = payload.header ?? {};
+      const parts: string[] = [];
+      if (header.email) parts.push(fromBase64(header.email));
+      if (header.scholar) parts.push('Scholar: ' + fromBase64(header.scholar));
+      if (header.github) parts.push('GitHub: ' + fromBase64(header.github));
+      printEl.textContent = parts.join('  |  ');
+    }
+  }
+
+  function initCvPage() {
+    document.getElementById('reveal-contact')?.addEventListener('click', revealContacts);
+    document.getElementById('print-cv')?.addEventListener('click', () => {
+      revealContacts();
+      window.print();
+    });
+  }
+
+  // Ensure the PDF is complete even when printed via Cmd/Ctrl+P.
+  window.addEventListener('beforeprint', revealContacts);
+
+  initCvPage();
+  document.addEventListener('astro:after-swap', initCvPage);
 </script>
