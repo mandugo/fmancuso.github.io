@@ -54,7 +54,7 @@ const latestPosts = await getLatestPosts(lang, 5);
     </div>
   </section>
 
-  {latestPosts.length > 0 && (
+  {latestPosts.length > 0 ? (
     <section class="section">
       <h2 class="section-title">{t(lang, 'home.latest')}</h2>
       <PostList posts={latestPosts} lang={lang} />
@@ -62,10 +62,20 @@ const latestPosts = await getLatestPosts(lang, 5);
         <a href={langPath(lang, '/blog')} class="link-arrow">{t(lang, 'home.viewAll')}</a>
       </p>
     </section>
+  ) : (
+    <section class="section">
+      <p class="no-posts">{t(lang, 'home.noPosts')}</p>
+    </section>
   )}
 </BaseLayout>
 
 <style>
+  .no-posts {
+    font-style: italic;
+    color: var(--text-muted);
+    text-align: center;
+  }
+
   .hero {
     position: relative;
     padding: 5rem 0 3rem;

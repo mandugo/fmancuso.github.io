@@ -79,7 +79,6 @@ export const cv: Record<'en' | 'it', CvData> = {
         institution: 'Adelaide Radar Research Centre, University of Adelaide',
         location: 'Adelaide, Australia',
         date: '2023 – 2024',
-        href: 'https://www.adelaide.edu.au/radar/people#students',
       },
       {
         degree: 'Qualification to the Profession',
@@ -184,7 +183,7 @@ export const cv: Record<'en' | 'it', CvData> = {
       { label: 'Google Scholar', value: 'Francesco Mancuso', href: 'https://scholar.google.com/citations?user=UwVa-gsAAAAJ' },
       { label: 'GitHub', value: 'mandugo', href: 'https://github.com/mandugo' },
       {
-        label: 'Order of Engineer',
+        label: 'Order of Engineers',
         value: 'Albo degli Ingegneri di Pisa',
         href: 'https://www.ordineingegneripisa.it/istituzione/albo/?m=45j39350n5147e411',
       },
@@ -234,7 +233,6 @@ export const cv: Record<'en' | 'it', CvData> = {
         institution: 'Adelaide Radar Research Centre, University of Adelaide',
         location: 'Adelaide, Australia',
         date: '2023 – 2024',
-        href: 'https://www.adelaide.edu.au/radar/people#students',
       },
       {
         degree: 'Abilitazione alla Professione',
