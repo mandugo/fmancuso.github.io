@@ -6,12 +6,12 @@ export const siteConfig = {
     it: 'Ricercatore presso RaSS - Consorzio Nazionale Interuniversitario per le Telecomunicazioni (CNIT)',
   },
   tagline: {
-    en: 'Radar Imaging, Remote Sensing & Electronic Warfare',
-    it: 'Radar Imaging, Telerilevamento e Guerra Elettronica',
+    en: 'Radar Imaging, Signal Processing and Electronic Warfare',
+    it: 'Radar Imaging, Elaborazione del Segnale e Guerra Elettronica',
   },
   description: {
-    en: 'Personal academic website of Francesco Mancuso — research in radar imaging, 3D InISAR, polarimetry, and remote sensing.',
-    it: 'Sito accademico personale di Francesco Mancuso — ricerca in radar imaging, 3D InISAR, polarimetria e telerilevamento.',
+    en: 'Personal academic website of Francesco Mancuso. Research in radar imaging, signal processing, and electronic warfare.',
+    it: 'Sito accademico personale di Francesco Mancuso. Ricerca in radar imaging, elaborazione del segnale e guerra elettronica.',
   },
   // Social links — leave empty string to hide
   social: {
