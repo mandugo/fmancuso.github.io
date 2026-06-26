@@ -461,16 +461,23 @@ a.tag:hover {
 }
 
 .cv-employer-header {
-  display: inline-block;
+  display: inline;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
   font-weight: 600;
   font-size: 0.9rem;
   color: var(--text-muted);
   padding: var(--space-xs) var(--space-md);
-  margin-bottom: var(--space-sm);
   background: color-mix(in srgb, var(--accent) 12%, var(--bg));
   border-radius: 12px;
-  line-height: 1.4;
+  line-height: 1.9;
   text-wrap: balance;
+}
+
+/* The header is inline (so the highlight hugs each line); inline boxes ignore
+   vertical margins, so the gap before the roles lives on the first role. */
+.cv-employer-header + .cv-role {
+  margin-top: var(--space-sm);
 }
 
 .cv-role {
