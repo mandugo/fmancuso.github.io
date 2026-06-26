@@ -267,6 +267,17 @@ const noscriptText =
     flex-shrink: 0;
   }
 
+  @media (max-width: 640px) {
+    .cv-title-row {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .cv-title-row .page-title {
+      flex: none;
+    }
+  }
+
   .cv-print-header {
     display: none;
   }

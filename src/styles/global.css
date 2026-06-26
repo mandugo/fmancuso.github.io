@@ -468,7 +468,9 @@ a.tag:hover {
   padding: var(--space-xs) var(--space-md);
   margin-bottom: var(--space-sm);
   background: color-mix(in srgb, var(--accent) 12%, var(--bg));
-  border-radius: 999px;
+  border-radius: 12px;
+  line-height: 1.4;
+  text-wrap: balance;
 }
 
 .cv-role {
@@ -826,7 +828,7 @@ a.tag:hover {
     margin-bottom: 0.4em;
     background: #e0e0e0;
     border: 0.5pt solid #bbb;
-    border-radius: 999px;
+    border-radius: 12px;
   }
 
   .cv-role {
