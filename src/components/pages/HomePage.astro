@@ -10,6 +10,23 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const currentPath = langPath(lang, '/');
 const latestPosts = await getLatestPosts(lang, 5);
+
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: siteConfig.name,
+  jobTitle: 'Researcher',
+  affiliation: { '@type': 'Organization', name: 'CNIT - RaSS' },
+  url: new URL(currentPath, Astro.site).href,
+  image: new URL('/images/me.png', Astro.site).href,
+  sameAs: [
+    siteConfig.social.github,
+    siteConfig.social.scholar,
+    siteConfig.social.orcid,
+    siteConfig.social.linkedin,
+    siteConfig.social.twitter,
+  ].filter(Boolean),
+};
 ---
 
 <BaseLayout
@@ -18,6 +35,7 @@ const latestPosts = await getLatestPosts(lang, 5);
   lang={lang}
   currentPath={currentPath}
 >
+  <script type="application/ld+json" set:html={JSON.stringify(personLd)} />
   <section class="hero section">
     <div class="hero-wave" aria-hidden="true">
       <svg viewBox="0 0 600 100" preserveAspectRatio="xMinYMid slice" xmlns="http://www.w3.org/2000/svg">

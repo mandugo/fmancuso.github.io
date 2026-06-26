@@ -41,6 +41,8 @@ const jsonLd = {
   description={post.data.description}
   lang={lang}
   currentPath={currentPath}
+  ogType="article"
+  publishedTime={post.data.pubDate.toISOString()}
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <article>

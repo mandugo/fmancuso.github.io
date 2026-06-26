@@ -18,9 +18,9 @@ export const siteConfig = {
     email: 'francesco.mancuso@cnit.it',
     github: 'https://github.com/mandugo',
     scholar: 'https://scholar.google.com/citations?user=UwVa-gsAAAAJ',
-    orcid: '',
+    orcid: 'https://orcid.org/0000-0003-4174-7816',
     twitter: '',
-    linkedin: '',
+    linkedin: 'https://www.linkedin.com/in/mancuso-f',
   },
 } as const;
 

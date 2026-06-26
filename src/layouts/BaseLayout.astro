@@ -13,9 +13,12 @@ interface Props {
   description: string;
   lang: Lang;
   currentPath: string;
+  ogType?: 'website' | 'article';
+  publishedTime?: string;
+  image?: string;
 }
 
-const { title, description, lang, currentPath } = Astro.props;
+const { title, description, lang, currentPath, ogType, publishedTime, image } = Astro.props;
 
 // Embed favicon as data URL so it always loads (avoids cache/path issues)
 const faviconPath = join(process.cwd(), 'public', 'favicon.svg');
@@ -36,7 +39,7 @@ const faviconDataUrl = (() => {
     <link rel="icon" type="image/svg+xml" href={faviconDataUrl} />
     <link rel="shortcut icon" type="image/svg+xml" href={faviconDataUrl} />
     <link rel="apple-touch-icon" href={faviconDataUrl} />
-    <BaseHead title={title} description={description} lang={lang} currentPath={currentPath} />
+    <BaseHead title={title} description={description} lang={lang} currentPath={currentPath} ogType={ogType} publishedTime={publishedTime} image={image} />
     <ViewTransitions />
   </head>
   <body>
