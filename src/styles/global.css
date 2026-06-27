@@ -460,24 +460,20 @@ a.tag:hover {
   margin-bottom: 0;
 }
 
+/* Full-width filled banner: a deliberate accent band rather than an
+   accidentally-stretched pill, so short single-line names and long names that
+   wrap to 2–3 lines both read as intentional. */
 .cv-employer-header {
-  display: inline;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
+  display: block;
   font-weight: 600;
   font-size: 0.9rem;
   color: var(--text-muted);
-  padding: var(--space-xs) var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  margin-bottom: var(--space-sm);
   background: color-mix(in srgb, var(--accent) 12%, var(--bg));
   border-radius: 12px;
-  line-height: 1.9;
-  text-wrap: balance;
-}
-
-/* The header is inline (so the highlight hugs each line); inline boxes ignore
-   vertical margins, so the gap before the roles lives on the first role. */
-.cv-employer-header + .cv-role {
-  margin-top: var(--space-sm);
+  line-height: 1.5;
+  text-wrap: pretty;
 }
 
 .cv-role {
@@ -827,11 +823,11 @@ a.tag:hover {
   }
 
   .cv-employer-header {
-    display: inline-block;
+    display: block;
     font-size: 9.5pt;
     font-weight: 700;
     color: #222;
-    padding: 0.2em 0.6em;
+    padding: 0.3em 0.6em;
     margin-bottom: 0.4em;
     background: #e0e0e0;
     border: 0.5pt solid #bbb;
